@@ -60,12 +60,12 @@ struct tagPopUpMenuItems PopUpMenuItems = {
 struct tagDetailsLabels Details = {
 /* Details Info Labels	*/		   TEXT("Process Name:"),TEXT("Process ID:"), TEXT("Parent ID:"), TEXT("Parent Name:"),
 								   TEXT("Thread Count:"),TEXT("Module Count:"),TEXT("Priority:"),TEXT("Process Cycles:"), 
-								   TEXT("Page Fault Count:"),TEXT("Page File Usage(KB):"),TEXT("Peak Page File Usage(KB):"),
-								   TEXT("Peak Working Set Size(KB):"),TEXT("Quota NonPageed Pool Usage(KB):"),TEXT("Quota Paged Pool Usage(KB):"),
-								   TEXT("Quota Peak NonPaged Pool Usage(KB):"),TEXT("Quta Peak Paged Pool Usage(KB):"),TEXT("WorkingSetSize(KB):"),
-								   TEXT("Company Name:"),TEXT("Description:"),TEXT("Path:"),TEXT("File Version:"),TEXT("Internal Name:"),TEXT("Legal Copyright:"),
-								   TEXT("Legal Trademarks"),TEXT("Original FileName:"),TEXT("Product Name:"),TEXT("Product Version:"),
-								   TEXT("Private Build:"),TEXT("Special Build:"),TEXT("Comments:")
+								   TEXT("Page Fault Count:"),TEXT("Page File Usage(KB):"),TEXT("Peak Page File Usage(KB):"),TEXT("Peak Working Set Size(KB):"),
+								   TEXT("Quota NonPageed Pool Usage(KB):"),TEXT("Quota Paged Pool Usage(KB):"),TEXT("Quota Peak NonPaged Pool Usage(KB):"),TEXT("Quta Peak Paged Pool Usage(KB):"),
+								   TEXT("WorkingSetSize(KB):"),TEXT("Company Name:"),TEXT("Description:"),TEXT("Path:"),
+								   TEXT("File Version:"),TEXT("Internal Name:"),TEXT("Legal Copyright:"),TEXT("Legal Trademarks"),
+								   TEXT("Original FileName:"),TEXT("Product Name:"),TEXT("Product Version:"),TEXT("Private Build:"),
+								   TEXT("Special Build:"),TEXT("Comments:"),TEXT("Private Usage(MB):")
 								  };
 
 struct tagSystemInfoTabLabels SystemInfoTab ={{TEXT("Processor Architecture:"),TEXT("Number Of Processors:"),TEXT("Min App Address:"),TEXT("Max App Address:")},
@@ -469,6 +469,13 @@ VOID ListDetails(INT Start){
 				PrintXY(Details.Items[29],DETAILS_START_X,Y);
 				LPrintXY(PeInfo[Selected.Process.Current].ProcessComments,MID_X - (DETAILS_START_X + MAX_DETAILS_LABEL_LEN + 1),DETAILS_START_X + MAX_DETAILS_LABEL_LEN,Y);
 				Y+=DETAILS_ITEMS_VERTICAL_DISTANCE;
+			}
+
+           //	Comments.
+    case 30:if (Y < DETAILS_START_Y + DETAILS_MAX_POSSIBLE_LINES) {
+				PrintXY(Details.Items[30], DETAILS_START_X, Y);
+				LNPrintXY(ByteTo(PeInfo[Selected.Process.Current].PrivateUsage, MB), MID_X - (DETAILS_START_X + MAX_DETAILS_LABEL_LEN + 1), DETAILS_START_X + MAX_DETAILS_LABEL_LEN, Y);
+				Y += DETAILS_ITEMS_VERTICAL_DISTANCE;
 			}
 	}
 	ReleaseMutex(hScreenMutex);

@@ -17,6 +17,27 @@
 //	Holds number of counted processes.
 INT CoreProcessCount;
 
+// 比较函数，用于 qsort 排序
+int compareProcessNames(const void* a, const void* b) {
+	struct tagProcessInfo* processA = (struct tagProcessInfo*)a;
+	struct tagProcessInfo* processB = (struct tagProcessInfo*)b;
+    return wcscmp(processA->ProcessName, processB->ProcessName);
+}
+
+PROCESS_MEMORY_COUNTERS_EX2 GetMemoryUsageInfo(DWORD Process_PID) {
+    MEMORYSTATUSEX memInfo;
+    memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+    GlobalMemoryStatusEx(&memInfo);
+
+    PROCESS_MEMORY_COUNTERS_EX2 PMC;
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, Process_PID);
+    GetProcessMemoryInfo(hProcess, (PPROCESS_MEMORY_COUNTERS)(&PMC), sizeof(PMC));
+
+
+    return PMC;
+}
+
+
 /*	Lists running processes plus
 *	Some information about them. */
 BOOL GetProcessList(VOID){
@@ -26,6 +47,7 @@ BOOL GetProcessList(VOID){
 	PROCESSENTRY32 pe32;
 	//	Contains the memory statistics for a process.
 	PROCESS_MEMORY_COUNTERS	pmc32;
+	PROCESS_MEMORY_COUNTERS_EX2 pmc32EX2;
 	// Creating a snapshot of all running processes in the system.
 	HANDLE hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
 	HANDLE hProcess;
@@ -44,6 +66,7 @@ BOOL GetProcessList(VOID){
 		hProcess = OpenProcess(PROCESS_ALL_ACCESS,FALSE,pe32.th32ProcessID);
 		//	Retrieving memory infromation about the process.
 		GetProcessMemoryInfo(hProcess,&pmc32,sizeof(pmc32));
+		GetProcessMemoryInfo(hProcess, (PPROCESS_MEMORY_COUNTERS)(&pmc32EX2), sizeof(pmc32EX2));
 		//	Assigning Obtained information about each process to its specific structure.
 			//	Process Name.
 			wcscpy(PeInfo[NumberOfProcess].ProcessName,pe32.szExeFile);
@@ -67,6 +90,10 @@ BOOL GetProcessList(VOID){
 				PeInfo[NumberOfProcess].QuotaPeakPagedPoolUsage = pmc32.QuotaPeakPagedPoolUsage;
 				//	Obtainig Working Set Size.
 				PeInfo[NumberOfProcess].WorkingSetSize = pmc32.WorkingSetSize;
+
+				//EX2
+				PeInfo[NumberOfProcess].PrivateUsage = pmc32EX2.PrivateUsage;
+				//pmc32EX2.PrivateUsage
 			}
 			//	Priority Base of process's threads.
 			PeInfo[NumberOfProcess].Priority = GetPriorityClass(hProcess);
@@ -79,6 +106,10 @@ BOOL GetProcessList(VOID){
 	//	Next Process.
 	++NumberOfProcess;
 	}while(Process32Next(hProcessSnap,&pe32));
+
+    // 使用 qsort 排序
+    qsort(PeInfo, NumberOfProcess, sizeof(struct tagProcessInfo), compareProcessNames);
+
 	// Keeping number of processes.
 	CoreProcessCount = NumberOfProcess;
 	// Closing the handle aftrer finishing work with it.

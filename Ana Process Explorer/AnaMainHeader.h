@@ -14,6 +14,7 @@
 #include <wchar.h>
 #include "AnaCoreMainHeader.h"
 #include "DrawTools.h"
+#include <psapi.h>
 
 //	Macros.
 #define MID_TEXT_START_X(START,END,LEN)			(START+(((((START)+END)-(START))-LEN)/2))
@@ -198,7 +199,7 @@ enum SetThreadPriorityMenu {THREAD_LOWEST,THREAD_BELOW_NORMAL,THREAD_NORMAL,THRE
 #define REGULAR_COLOR				(BACKGROUND_BLUE | (FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY))
 
 //	Details Tab.
-#define DETAILS_ITEMS			30
+#define DETAILS_ITEMS			50
 #define MAX_DETAILS_LABEL_LEN	40
 	//
 #define DETAILS_START_X							(LEFT_MARGIN+1)

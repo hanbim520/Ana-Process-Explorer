@@ -26,18 +26,19 @@
 
 /*	Main defines.	*/
 //	Maximum length of process name.
-#define MAXFILENAME			30
+#define MAXFILENAME			300
 //	Maximun length of process description and company name.
-#define MAXDESCLENGHT		50
+#define MAXDESCLENGHT		500
 //	Lenght of the array of tagProcessInfo structure.
-#define PROCESSSTRUCTLENGHT	200
+#define PROCESSSTRUCTLENGHT	2000
 //	Lenght of the array of tagModuleInfo structure.
-#define MODULESTRUCTLENGHT	50
+#define MODULESTRUCTLENGHT	500
 //	Lenght of the array of tagThreadInfo structure.
-#define THREADSTRUCTLENGHT	150
+#define THREADSTRUCTLENGHT	1500
 
 /*	Unit defines.	*/
 #define KB	1
+#define MB	1024
 
 /*	Global Structures.	*/
 //	A structure which keeps information about a process.
@@ -70,6 +71,11 @@ struct tagProcessInfo{
     SIZE_T QuotaNonPagedPoolUsage;
     SIZE_T PagefileUsage;
     SIZE_T PeakPagefileUsage;
+
+
+	//EX2
+	SIZE_T PrivateUsage;
+
 	//	Works as a flag, so that if the process was used in the tree, it won't be printed once more.
 	BOOL InTree;
 	//	From 0 to NumberOfModule.

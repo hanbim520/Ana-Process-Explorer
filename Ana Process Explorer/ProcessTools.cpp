@@ -71,16 +71,16 @@ DWORD ProcessCPUTime(WCHAR * Instance){
 	Buffer[i] = '\0';
 	if(CPU_RunOnce){
 		status = PdhOpenQuery(NULL, 0, &query);
-		if(status != ERROR_SUCCESS)	return;
+		if(status != ERROR_SUCCESS)	return (DWORD)cput;
 		PdhAddCounter(query, Buffer, 0, &counter);
 		CPU_RunOnce=FALSE;
 		PdhCollectQueryData(query); // No error checking here
-		return;
+		return (DWORD)cput;
 	}
 	status = PdhCollectQueryData(query);
-	if(status != ERROR_SUCCESS)	return;
+	if(status != ERROR_SUCCESS)	return (DWORD)cput;
 	status = PdhGetFormattedCounterValue(counter, PDH_FMT_DOUBLE | PDH_FMT_NOCAP100 ,&ret, &value);
-	if(status != ERROR_SUCCESS)	return;
+	if(status != ERROR_SUCCESS)	return (DWORD)cput;
 	cput = value.doubleValue/2;
 	return (DWORD) cput;
 }

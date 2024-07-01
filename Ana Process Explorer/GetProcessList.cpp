@@ -13,6 +13,10 @@
 #include "AnaMainHeader.h"
 #include "ProcessTools.h"
 #include <strsafe.h>
+#include <psapi.h>
+#include <stdlib.h>
+#include "AnaCoreMainHeader.h"
+
 
 //	Holds number of counted processes.
 INT CoreProcessCount;
@@ -31,12 +35,11 @@ PROCESS_MEMORY_COUNTERS_EX2 GetMemoryUsageInfo(DWORD Process_PID) {
 
     PROCESS_MEMORY_COUNTERS_EX2 PMC;
     HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, Process_PID);
-    GetProcessMemoryInfo(hProcess, (PPROCESS_MEMORY_COUNTERS)(&PMC), sizeof(PMC));
+    GetProcessMemoryInfo(hProcess, reinterpret_cast<PPROCESS_MEMORY_COUNTERS>(&PMC), sizeof(PMC));
 
 
     return PMC;
 }
-
 
 /*	Lists running processes plus
 *	Some information about them. */
@@ -66,7 +69,10 @@ BOOL GetProcessList(VOID){
 		hProcess = OpenProcess(PROCESS_ALL_ACCESS,FALSE,pe32.th32ProcessID);
 		//	Retrieving memory infromation about the process.
 		GetProcessMemoryInfo(hProcess,&pmc32,sizeof(pmc32));
-		GetProcessMemoryInfo(hProcess, (PPROCESS_MEMORY_COUNTERS)(&pmc32EX2), sizeof(pmc32EX2));
+
+        
+		// 
+		//pmc32EX2 = GetMemoryUsageInfo(pe32.th32ProcessID);
 		//	Assigning Obtained information about each process to its specific structure.
 			//	Process Name.
 			wcscpy(PeInfo[NumberOfProcess].ProcessName,pe32.szExeFile);
@@ -91,9 +97,24 @@ BOOL GetProcessList(VOID){
 				//	Obtainig Working Set Size.
 				PeInfo[NumberOfProcess].WorkingSetSize = pmc32.WorkingSetSize;
 
-				//EX2
-				PeInfo[NumberOfProcess].PrivateUsage = pmc32EX2.PrivateUsage;
-				//pmc32EX2.PrivateUsage
+                if (GetProcessMemoryInfo(hProcess, reinterpret_cast<PPROCESS_MEMORY_COUNTERS>(&pmc32EX2), sizeof(pmc32EX2))) {
+                    //EX2
+                    PeInfo[NumberOfProcess].PrivateUsage = pmc32EX2.PrivateUsage;
+                    PeInfo[NumberOfProcess].PrivateWorkingSetSize = pmc32EX2.PrivateWorkingSetSize;
+                    PeInfo[NumberOfProcess].SharedCommitUsage = pmc32EX2.SharedCommitUsage;
+                }
+                else {
+                    //EX2
+                    PeInfo[NumberOfProcess].PrivateUsage = 0;
+                    PeInfo[NumberOfProcess].PrivateWorkingSetSize = 0;
+                    PeInfo[NumberOfProcess].SharedCommitUsage = 0;
+
+                    // Handle the error
+                  //  DWORD error = GetLastError();
+                   // printf("Error: %lu\n", error);
+                }
+
+				
 			}
 			//	Priority Base of process's threads.
 			PeInfo[NumberOfProcess].Priority = GetPriorityClass(hProcess);
@@ -108,7 +129,7 @@ BOOL GetProcessList(VOID){
 	}while(Process32Next(hProcessSnap,&pe32));
 
     // 使用 qsort 排序
-    qsort(PeInfo, NumberOfProcess, sizeof(struct tagProcessInfo), compareProcessNames);
+    //qsort(PeInfo, NumberOfProcess, sizeof(struct tagProcessInfo), compareProcessNames);
 
 	// Keeping number of processes.
 	CoreProcessCount = NumberOfProcess;

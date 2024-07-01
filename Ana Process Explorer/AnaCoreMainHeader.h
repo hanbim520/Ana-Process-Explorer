@@ -1,3 +1,5 @@
+#pragma once
+
 /*	Project Name:	Ana Process Explorer
 *	Written By	:	Ahmad			Siavashi 	->	Email: a.siavosh@yahoo.com,
 *					Ali				Kianinejad	->	Email: af.kianinejad@gmail.com,
@@ -75,6 +77,8 @@ struct tagProcessInfo{
 
 	//EX2
 	SIZE_T PrivateUsage;
+    SIZE_T PrivateWorkingSetSize;
+    ULONG64 SharedCommitUsage;
 
 	//	Works as a flag, so that if the process was used in the tree, it won't be printed once more.
 	BOOL InTree;
@@ -94,18 +98,18 @@ struct tagProcessInfo{
 	}Threads[THREADSTRUCTLENGHT];
 };
 //	Creating an array from tagProcessInfo structure.
-struct tagProcessInfo PeInfo[PROCESSSTRUCTLENGHT];
+extern struct tagProcessInfo PeInfo[PROCESSSTRUCTLENGHT];
 //	Holds number of counted processes.
 extern INT CoreProcessCount;
 //	For Retrieving CPU Usage of each process.
 extern	BOOL	CPU_RunOnce;
 //	Creating a structure to hold System information.
-SYSTEM_INFO SysInfo;
+extern SYSTEM_INFO SysInfo;
 //	Creating a structure to hold Memory information.
-MEMORYSTATUS SysMemory;
+extern MEMORYSTATUS SysMemory;
 
 /*	System CPU Usage and Up Time structure.	*/
-struct tagSystemCPUTimeInfo{
+ struct tagSystemCPUTimeInfo{
 	//	CPU Usage.
 	ULONGLONG CPU_Usage;
 	//	UpTime.
@@ -113,7 +117,9 @@ struct tagSystemCPUTimeInfo{
 	INT Hours;
 	INT Minutes;
 	INT Seconds;
-}SystemCPU_UsageAndUpTimeInfo;
+};
 
+ extern tagSystemCPUTimeInfo SystemCPU_UsageAndUpTimeInfo;
 //	Creating a structure to get system perfermence information.
-	PERFORMANCE_INFORMATION PerInfo;
+extern	PERFORMANCE_INFORMATION PerInfo;
+

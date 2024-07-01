@@ -38,7 +38,7 @@ VOID ArrangeParent(VOID){
 
 /*	Intergange the i(th) and the j(th) elements of the structure.	*/
 VOID Swap(DWORD i,DWORD j){
-	struct tagProcessInfo temp;
+	tagProcessInfo temp;
 	temp = PeInfo[i];
 	PeInfo[i]=PeInfo[j];
 	PeInfo[j]=temp;

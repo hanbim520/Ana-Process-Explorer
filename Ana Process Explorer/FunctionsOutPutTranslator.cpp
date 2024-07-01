@@ -14,7 +14,7 @@
 
 /*	Changes the value returned by the GetPriorityClass function
 *	to a meaningfull string.	*/
-CONST WCHAR * ProcessPriorityTranslate(DWORD PriorityClass){
+ WCHAR * ProcessPriorityTranslate(DWORD PriorityClass){
 	switch(PriorityClass){
 	case 0x00000040:
 		return TEXT("IDLE");

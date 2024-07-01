@@ -9,6 +9,7 @@
 *	Shiraz University, Shiraz, Iran.
 *	Spring 1391, 2012.
 */
+#include <iostream>
 #include "AnaMainHeader.h"
 #include "StartApplication.h"
 

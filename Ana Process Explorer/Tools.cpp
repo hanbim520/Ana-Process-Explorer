@@ -231,7 +231,7 @@ BOOL CheckConsoleSize(VOID){
 }
 
 /*	Gets keyboard keys and perfoms the suitable action.	*/
-BOOL GetKey(VOID){
+void  GetKey(void* arg){
 	INT Key;
 	enum keys { UP_ARROW = 72, LEFT_ARROW = 75, RIGHT_ARROW = 77, DOWN_ARROW = 80, ENTER = 13, ESC = 27 };
 	while (TRUE){

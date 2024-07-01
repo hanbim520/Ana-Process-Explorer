@@ -22,6 +22,7 @@
     <ProjectGuid>{F8345648-166E-4BAF-8E30-29BE40563EFB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>AnaProcessExplorer</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -98,11 +99,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>psapi.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;version.lib;Psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -148,21 +150,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Core.c" />
-    <ClCompile Include="CoreTools.c" />
-    <ClCompile Include="DrawTools.c" />
-    <ClCompile Include="GetModulesList.c" />
-    <ClCompile Include="GetProcessList.c" />
-    <ClCompile Include="GetThreadsList.c" />
-    <ClCompile Include="Graph.c" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="FunctionsOutPutTranslator.c" />
-    <ClCompile Include="ProcessTools.c" />
-    <ClCompile Include="StaticParts.c" />
-    <ClCompile Include="DynamicParts.c" />
-    <ClCompile Include="StartApplication.c" />
-    <ClCompile Include="ThreadTools.c" />
-    <ClCompile Include="Tools.c" />
+    <ClCompile Include="AnaCoreMainHeader.cpp" />
+    <ClCompile Include="AnaMainHeader.cpp" />
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="CoreTools.cpp" />
+    <ClCompile Include="DrawTools.cpp" />
+    <ClCompile Include="GetModulesList.cpp" />
+    <ClCompile Include="GetProcessList.cpp" />
+    <ClCompile Include="GetThreadsList.cpp" />
+    <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="FunctionsOutPutTranslator.cpp" />
+    <ClCompile Include="ProcessTools.cpp" />
+    <ClCompile Include="StaticParts.cpp" />
+    <ClCompile Include="DynamicParts.cpp" />
+    <ClCompile Include="StartApplication.cpp" />
+    <ClCompile Include="ThreadTools.cpp" />
+    <ClCompile Include="Tools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnaCoreMainHeader.h" />

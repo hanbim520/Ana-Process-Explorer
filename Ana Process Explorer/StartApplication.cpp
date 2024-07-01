@@ -14,6 +14,7 @@
 #include "Core.h"
 #include "StaticParts.h"
 #include "Tools.h"
+#include <process.h>
 
 //	Creating an object for multithreading purposes.
 HANDLE hScreenMutex;
@@ -58,7 +59,7 @@ BOOL StartApplication(VOID){
 	//	Opens the current tab.
 	DrawCurrentTab(TRUE);
 	// Opens a thread to run GetKey function which watches keyboard signals.
-	_beginthread(GetKey);
+	_beginthread(GetKey,0,NULL);
 	//	Watching screen size changes to redraw the console.
 	while(TRUE){
 		//	Refreshes everything.

@@ -59,7 +59,7 @@ VOID NPrintXY(ULONG64 Num,INT x,INT y){
 	if(i==0)
 		Text[i++]='0';
 	Text[i]='\0';
-	wcsrev(Text);
+	_wcsrev(Text);
 	PrintXY(Text,x,y);
 }
 

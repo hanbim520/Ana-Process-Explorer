@@ -33,50 +33,56 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicParts.c">
+    <ClCompile Include="DynamicParts.cpp">
       <Filter>Source Files\TUI\Draws</Filter>
     </ClCompile>
-    <ClCompile Include="StaticParts.c">
+    <ClCompile Include="StaticParts.cpp">
       <Filter>Source Files\TUI\Draws</Filter>
     </ClCompile>
-    <ClCompile Include="DrawTools.c">
+    <ClCompile Include="DrawTools.cpp">
       <Filter>Source Files\TUI\DrawTools</Filter>
     </ClCompile>
-    <ClCompile Include="StartApplication.c">
+    <ClCompile Include="StartApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoreTools.c">
+    <ClCompile Include="CoreTools.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="GetModulesList.c">
+    <ClCompile Include="GetModulesList.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="GetProcessList.c">
+    <ClCompile Include="GetProcessList.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="GetThreadsList.c">
+    <ClCompile Include="GetThreadsList.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessTools.c">
+    <ClCompile Include="ProcessTools.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadTools.c">
+    <ClCompile Include="ThreadTools.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Core.c">
+    <ClCompile Include="Core.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="FunctionsOutPutTranslator.c">
+    <ClCompile Include="FunctionsOutPutTranslator.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Graph.c">
+    <ClCompile Include="Graph.cpp">
       <Filter>Source Files\TUI\Draws</Filter>
     </ClCompile>
-    <ClCompile Include="Tools.c">
+    <ClCompile Include="Tools.cpp">
       <Filter>Source Files\TUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AnaCoreMainHeader.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="AnaMainHeader.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

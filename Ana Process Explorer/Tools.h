@@ -1,3 +1,4 @@
+#pragma once
 /*	Project Name:	Ana Process Explorer
 *	Written By	:	Ahmad			Siavashi 	->	Email: a.siavosh@yahoo.com,
 *					Ali				Kianinejad	->	Email: af.kianinejad@gmail.com,
@@ -14,7 +15,7 @@ VOID ReDrawAll(VOID);
 //	Watches console size changes by the user.
 BOOL CheckConsoleSize(VOID);
 //	Gets keyboard keys and perfoms the suitable action.
-BOOL GetKey(VOID);
+void  GetKey(void* arg);
 //	Does the suitable action according to the selected menu item.
 VOID PerformCurrentTabMenuCommand(VOID);
 //	Refreshes everything.

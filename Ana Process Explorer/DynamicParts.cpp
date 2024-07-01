@@ -65,7 +65,8 @@ struct tagDetailsLabels Details = {
 								   TEXT("WorkingSetSize(KB):"),TEXT("Company Name:"),TEXT("Description:"),TEXT("Path:"),
 								   TEXT("File Version:"),TEXT("Internal Name:"),TEXT("Legal Copyright:"),TEXT("Legal Trademarks"),
 								   TEXT("Original FileName:"),TEXT("Product Name:"),TEXT("Product Version:"),TEXT("Private Build:"),
-								   TEXT("Special Build:"),TEXT("Comments:"),TEXT("Private Usage(MB):")
+								   TEXT("Special Build:"),TEXT("Comments:"),TEXT("Private Usage(MB):"),TEXT("PrivateWorkingSet Size(MB):"),
+								   TEXT("SharedCommit Usage(MB):")
 								  };
 
 struct tagSystemInfoTabLabels SystemInfoTab ={{TEXT("Processor Architecture:"),TEXT("Number Of Processors:"),TEXT("Min App Address:"),TEXT("Max App Address:")},
@@ -471,10 +472,22 @@ VOID ListDetails(INT Start){
 				Y+=DETAILS_ITEMS_VERTICAL_DISTANCE;
 			}
 
-           //	Comments.
+           //	PrivateUsage.
     case 30:if (Y < DETAILS_START_Y + DETAILS_MAX_POSSIBLE_LINES) {
 				PrintXY(Details.Items[30], DETAILS_START_X, Y);
 				LNPrintXY(ByteTo(PeInfo[Selected.Process.Current].PrivateUsage, MB), MID_X - (DETAILS_START_X + MAX_DETAILS_LABEL_LEN + 1), DETAILS_START_X + MAX_DETAILS_LABEL_LEN, Y);
+				Y += DETAILS_ITEMS_VERTICAL_DISTANCE;
+			}
+           //	PrivateWorkingSetSize.
+    case 31:if (Y < DETAILS_START_Y + DETAILS_MAX_POSSIBLE_LINES) {
+				PrintXY(Details.Items[31], DETAILS_START_X, Y);
+				LNPrintXY(ByteTo(PeInfo[Selected.Process.Current].PrivateWorkingSetSize, MB), MID_X - (DETAILS_START_X + MAX_DETAILS_LABEL_LEN + 1), DETAILS_START_X + MAX_DETAILS_LABEL_LEN, Y);
+				Y += DETAILS_ITEMS_VERTICAL_DISTANCE;
+			}
+           //	SharedCommitUsage.
+    case 32:if (Y < DETAILS_START_Y + DETAILS_MAX_POSSIBLE_LINES) {
+				PrintXY(Details.Items[32], DETAILS_START_X, Y);
+				LNPrintXY(ByteTo(PeInfo[Selected.Process.Current].SharedCommitUsage, MB), MID_X - (DETAILS_START_X + MAX_DETAILS_LABEL_LEN + 1), DETAILS_START_X + MAX_DETAILS_LABEL_LEN, Y);
 				Y += DETAILS_ITEMS_VERTICAL_DISTANCE;
 			}
 	}

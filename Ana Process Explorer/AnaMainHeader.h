@@ -1,4 +1,5 @@
-﻿/*	Project Name:	Ana Process Explorer
+﻿#pragma once
+/*	Project Name:	Ana Process Explorer
 *	Written By	:	Ahmad			Siavashi 	->	Email: a.siavosh@yahoo.com,
 *					Ali				Kianinejad	->	Email: af.kianinejad@gmail.com,
 *				 	Farid			Amiri,
@@ -221,13 +222,13 @@ enum SetThreadPriorityMenu {THREAD_LOWEST,THREAD_BELOW_NORMAL,THREAD_NORMAL,THRE
 #define SYSTEM_INFO_TAB_SECOND_SIDE_LABEL				TEXT("Memory Information")
 
 //	A handle to console.
-HANDLE hConsole;
-
+extern HANDLE hConsole;
+ 
 // Max number of characters in the user screen size.
-COORD WindowSize;
+extern COORD WindowSize;
 
 // A Structure to hold Threads tab columns information.
-struct tagTabDataColumns{
+extern struct tagTabDataColumns{
 	struct tagThreadsTab {
 		//	Visibility of column.
 		BOOL ThreadPIDColumn_Visibile;

@@ -15,6 +15,7 @@
 #include "StaticParts.h"
 #include "Tools.h"
 #include <process.h>
+#include <string>
 
 //	Creating an object for multithreading purposes.
 HANDLE hScreenMutex;
@@ -47,11 +48,12 @@ VOID InitializeConsole(VOID){
 }
 
 /*	Runs the program.	*/
-BOOL StartApplication(VOID){
+BOOL StartApplication(std::string ProcessName /*= ""*/, std::string outFilePath /*= ""*/)
+{
 	//	Initializing Console features.
 	InitializeConsole();
 	//	Loads All Information.
-	LoadAllInformation(ALL);
+	LoadAllInformation(ALL, ProcessName, outFilePath);
 	//	Drawing static parts of the console program.
 	DrawStaticBordersAndStyles();
 	//	Fills Status bar and System Up time information.
@@ -63,7 +65,7 @@ BOOL StartApplication(VOID){
 	//	Watching screen size changes to redraw the console.
 	while(TRUE){
 		//	Refreshes everything.
-		Refresh();
+		Refresh(ProcessName, outFilePath);
 		//	Waits for the next round.
 		Sleep(1000);
 	}

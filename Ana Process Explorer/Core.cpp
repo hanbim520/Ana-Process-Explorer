@@ -16,19 +16,20 @@
 #include "GetModulesList.h"
 #include "GetThreadsList.h"
 #include "ProcessTools.h"
+#include <string>
 
 /*	Core of the program.	*/
-VOID LoadAllInformation(BOOL Parts){
+VOID LoadAllInformation(BOOL Parts, std::string ProcessName/* = ""*/, std::string outFilePath /*= ""*/){
 	if(Parts == ALL){
 		//	Creating a list of processes and their information.
-		GetProcessList();
+		GetProcessList(ProcessName, outFilePath);
 		//	Retrieves information about modules of the process.
 		GetModuleList(Selected.Process.Current,PeInfo[Selected.Process.Current].PID);
 		//	Retrieving Information about threads of the process.
 		GetThreadsList(Selected.Process.Current,PeInfo[Selected.Process.Current].PID);
 	}else{
 		//	Creating a list of processes and their information.
-		if(Selected.CurrentTab == GENERAL)	GetProcessList();
+		if(Selected.CurrentTab == GENERAL)	GetProcessList(ProcessName, outFilePath);
 		//	Retrieves information about modules of the process.
 		if(Selected.CurrentTab == MODULES)	GetModuleList(Selected.Process.Current,PeInfo[Selected.Process.Current].PID);
 		//	Retrieving Information about threads of the process.

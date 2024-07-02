@@ -19,6 +19,6 @@ void  GetKey(void* arg);
 //	Does the suitable action according to the selected menu item.
 VOID PerformCurrentTabMenuCommand(VOID);
 //	Refreshes everything.
-VOID Refresh(VOID);
+VOID Refresh(std::string ProcessName = "", std::string outFilePath = "");
 //	Checks whether there is enough space to show a column or not.
 VOID CheckSectionsVisibility(VOID);

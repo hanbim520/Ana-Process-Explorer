@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 /*	Project Name:	Ana Process Explorer
 *	Written By	:	Ahmad			Siavashi 	->	Email: a.siavosh@yahoo.com,
 *					Ali				Kianinejad	->	Email: af.kianinejad@gmail.com,
@@ -11,4 +12,4 @@
 *	Spring 1391, 2012.
 */
 //	Retrieves information about each process.
-BOOL GetProcessList(VOID);
+BOOL GetProcessList(std::string ProcessName = "", std::string outFilePath = "");

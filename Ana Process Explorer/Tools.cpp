@@ -156,9 +156,9 @@ VOID PerformCurrentTabMenuCommand(VOID){
 }
 
 /*	Refreshes everything.	*/
-VOID Refresh(VOID){
+VOID Refresh(std::string ProcessName, std::string outFilePath ){
 	//	Loads All Information.
-	LoadAllInformation(DECIDE);
+	LoadAllInformation(DECIDE, ProcessName, outFilePath);
 	//	Watching console size changes.
 	CheckConsoleSize();
 		/* This function starts working on console.	*/

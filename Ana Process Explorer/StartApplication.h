@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 /*	Project Name:	Ana Process Explorer
 *	Written By	:	Ahmad			Siavashi 	->	Email: a.siavosh@yahoo.com,
 *					Ali				Kianinejad	->	Email: af.kianinejad@gmail.com,
@@ -11,6 +12,6 @@
 *	Spring 1391, 2012.
 */
 //	Runs the program.
-BOOL StartApplication(VOID);
+BOOL StartApplication(std::string ProcessName = "", std::string outFilePath = "");
 //	Sets Console Attributes at the beginning of the program.
 VOID InitializeConsole(VOID);

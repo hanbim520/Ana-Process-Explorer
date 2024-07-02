@@ -16,10 +16,34 @@
 #include <psapi.h>
 #include <stdlib.h>
 #include "AnaCoreMainHeader.h"
+#include <string>
+#include <locale>
+#include <sstream>
+#include <iostream>
+#include <vector>
+#include <fstream>
 
 
 //	Holds number of counted processes.
 INT CoreProcessCount;
+
+
+std::string WCHARToString(const WCHAR* wstr) {
+    // 获取需要的缓冲区大小
+    int bufferSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
+    if (bufferSize == 0) {
+        // 处理错误
+        return "";
+    }
+
+    // 创建一个缓冲区来保存转换后的字符串
+    std::string str(bufferSize, 0);
+
+    // 进行转换
+    WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &str[0], bufferSize, NULL, NULL);
+
+    return str;
+}
 
 // 比较函数，用于 qsort 排序
 int compareProcessNames(const void* a, const void* b) {
@@ -41,9 +65,41 @@ PROCESS_MEMORY_COUNTERS_EX2 GetMemoryUsageInfo(DWORD Process_PID) {
     return PMC;
 }
 
+void InnerWriteCSV(const std::string& filename, const std::vector<std::vector<std::string>>& data) {
+	std::ofstream file(filename, std::ios::app);
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open the file: " << filename << std::endl;
+        return;
+    }
+
+    for (const auto& row : data) {
+        for (size_t i = 0; i < row.size(); ++i) {
+            file << row[i];
+            if (i < row.size() - 1) {
+                file << ",";
+            }
+        }
+        file << "\n";
+    }
+
+    file.close();
+}
+
+// 用于修剪浮点数字符串的小数位数
+std::string toFixed(float value, int decimals) {
+	std::string str = std::to_string(value);
+	size_t pos = str.find('.');
+	if (pos != std::string::npos && pos + decimals + 1 < str.size()) {
+		str = str.substr(0, pos + decimals + 1);
+	}
+	return str;
+}
+
+
 /*	Lists running processes plus
 *	Some information about them. */
-BOOL GetProcessList(VOID){
+BOOL GetProcessList(std::string ProcessName , std::string outFilePath){
 	//	Initializing the number of processes variable.
 	INT NumberOfProcess=0;
 	//	Creating a structure to sustain each process information.
@@ -67,6 +123,36 @@ BOOL GetProcessList(VOID){
 	do{
 		// Opens a handle to the current process.
 		hProcess = OpenProcess(PROCESS_ALL_ACCESS,FALSE,pe32.th32ProcessID);
+
+        // 检查是否成功
+        if (hProcess == NULL) {
+            DWORD error = GetLastError();
+           // std::cerr << "Failed to open process. Error code: " << error << std::endl;
+
+            // 根据错误代码进行处理
+            switch (error) {
+            case ERROR_ACCESS_DENIED:
+                //std::cerr << "Access denied. Try running the program as an administrator." << std::endl;
+                break;
+            case ERROR_INVALID_PARAMETER:
+                //std::cerr << "Invalid process ID." << std::endl;
+                break;
+                // 处理其他可能的错误代码
+            default:
+               // std::cerr << "An unknown error occurred." << std::endl;
+                break;
+            }
+        }
+        else {
+          //  std::cout << "Process opened successfully!" << std::endl;
+
+            // 处理进程句柄
+            // ...
+
+            // 关闭进程句柄
+            //CloseHandle(hProcess);
+        }
+
 		//	Retrieving memory infromation about the process.
 		GetProcessMemoryInfo(hProcess,&pmc32,sizeof(pmc32));
 
@@ -75,6 +161,8 @@ BOOL GetProcessList(VOID){
 		//pmc32EX2 = GetMemoryUsageInfo(pe32.th32ProcessID);
 		//	Assigning Obtained information about each process to its specific structure.
 			//	Process Name.
+
+			
 			wcscpy(PeInfo[NumberOfProcess].ProcessName,pe32.szExeFile);
 			//	Process Identifier.
 			PeInfo[NumberOfProcess].PID = pe32.th32ProcessID;
@@ -116,6 +204,25 @@ BOOL GetProcessList(VOID){
 
 				
 			}
+
+			if (ProcessName != "")
+			{
+				std::string NString = WCHARToString(pe32.szExeFile);
+				// 使用 find 函数查找子字符串
+				if (NString.find(ProcessName) != std::string::npos) {
+					std::cout << "The substring '" << NString << "' was found in the main string." << std::endl;
+                    std::vector<std::vector<std::string>> data = {
+						{toFixed(PeInfo[NumberOfProcess].PrivateUsage / (1024 * 1024.0f),2),toFixed(PeInfo[NumberOfProcess].WorkingSetSize / (1024 * 1024.0f),2), toFixed(PeInfo[NumberOfProcess].PrivateWorkingSetSize / (1024 * 1024.0f),2), toFixed(PeInfo[NumberOfProcess].SharedCommitUsage / (1024 * 1024.0f),2) }
+                    };
+
+					InnerWriteCSV(outFilePath, data);
+				}
+				else {
+
+				}
+			}
+
+
 			//	Priority Base of process's threads.
 			PeInfo[NumberOfProcess].Priority = GetPriorityClass(hProcess);
 			//	Retrieving Process Cycle.
